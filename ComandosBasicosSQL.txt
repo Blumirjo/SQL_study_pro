@@ -1,0 +1,291 @@
+ para comentar codigo SQL lo hacemos con doble --
+  es decir doble guion
+ 
+ 
+ -  create database porfolio
+
+crea una nueva base de datos con el nombre que se le asigne
+
+
+
+----------------------------------------------------
+
+-  show databases
+
+Muestra todas las databases existentes
+
+
+-------------------------------------------------------
+
+
+CREATE TABLE users (
+  id int, 
+  nombre varchar(255),
+  apellido varchar(255),
+  edad int,
+  genero varchar(255),
+  PRIMARY KEY (id)
+  
+);
+
+asi es como se crea una nueva tabla
+
+
+---------------------------------------
+
+
+     INSERT INTO users (nombre,apellido,edad,genero) VALUES('Juancito','Estigarribia',34,'Masculino');
+
+
+
+asi se agrega informacion en una tabla.
+
+
+
+**En la creacion de la base de datos no se instancio a la primary key como un valos autoincremental, por eso hayq eu modificarlo**
+
+
+     ALTER TABLE users MODIFY COLUMN id int auto_increment;
+
+De esa forma se logra modificar la primary key de una tabla de base de datos
+
+----------------------------
+
+SHOW CREATE TABLE users ;
+
+de esa forma el programa nos va a mostrar cierto codigo que podemos reutilizar...
+
+(boton secuendario y "copy field")
+
+y obtenemos esto..
+
+
+'CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) DEFAULT NULL,
+  `apellido` varchar(255) DEFAULT NULL,
+  `edad` int DEFAULT NULL,
+  `genero` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'
+
+debemos limpiarlo es decir dejar solo la declaracion y quitar los strings quedando asi:
+
+
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) DEFAULT NULL,
+  `apellido` varchar(255) DEFAULT NULL,
+  `edad` int DEFAULT NULL,
+  `genero` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) 
+
+
+
+agregando campos a la tabla
+
+INSERT INTO users (nombre,apellido,edad,genero) VALUES('Federico','Margarito',34,'Masculino');
+ INSERT INTO users (nombre,apellido,edad,genero) VALUES('Matias','Benitez',34,'Masculino');
+ INSERT INTO users (nombre,apellido,edad,genero) VALUES('Macarena','Martinez',34,'Femenino');
+ 
+
+TIPOS DE DATOS SQL:
+
+int : simboliza numeros enteros.
+float: simboliza numeros decimales.
+varchar: es una cadena de texto, palabras, oracion, frases
+
+
+------------
+
+SELECT, nos va a permitir seleccionar elementos de la bb/tablas 
+
+SELECT * FROM users;
+
+el asterisco hace referencia a que acaba de seleccionar todos los elementos de la tabla users
+
+SELECT * FROM users WHERE id = 1;
+
+aqui decimos que seleccione todos los elementos donde(where) el id sea 1.En este caso deberia devolvernos un solo elemento, ya que se supone que el id es unico
+
+SELECT * FROM users WHERE genero = 'Masculino';
+
+Aqui mostrara solo los elementos que tengan genero masculino, aqui en cambio puede ser que mas de un elemento sea masculino.
+
+
+ SELECT * FROM users WHERE genero = 'Masculino' AND nombre = 'Matias';
+
+ aqui en cambio podemos con el AND, agregar un nuevo filtro que nos permite tomar mas datos en cuenta
+Esto se usa principalmente para ver, es decir visualizar lo elemtos,... a continuacion como modificar elementos ya existentes.
+
+
+ UPDATE users SET genero 'Femenino' where id = 1;
+
+ De esta forma modificamos el valos del elemento que tiene el id 1.
+
+
+
+   ahora vemos que pasa si queremos eliminar un registro...
+
+
+   DELETE FROM users WHERE id = 1;
+
+   Es importante hacer la operacion de eliminacion utilizando el id del elemento.
+
+
+
+   Tanto en los UPDATES y en los DELETE hay que pasarle en el WHERE el id sino tendremos un error 1175
+
+     UPDATE users SET edad = 95 WHERE id = '4'
+
+
+A continuacion un prototipo de tabla de usuario:
+
+
+CREATE TABLE  userPrototypeOne (
+  id int not null auto_increment,
+  name varchar(50) not null,
+  edad int not null,
+  email varvhar(100) not null,
+  primary key (id)
+)
+
+INSERT INTO userPrototypeOne (name, edad, email) values ('Oscar', 25,'oscar@gmail.com');
+
+INSERT INTO userPrototypeOne (name, edad, email) values ('Layla', 15,'layla@gmail.com');
+
+INSERT INTO userPrototypeOne (name, edad, email) values ('Nicolas', 36,'nico@gmail.com');
+
+INSERT INTO userPrototypeOne (name, edad email) values ('Chanchito', 7,'Chanchito@gmail.com');
+
+
+De esa forma instanciamos una nueva base de datos:::
+
+
+Ahora a profundizar la instruccion SELECT:
+
+
+SELECT * from userPrototypeOne;   ----  de esta forma seleccionamos todos los elementos de una tabla.
+ 
+SELECT * from userPrototypeOne limit 1;   -----  se limita a mostrar tan solo el primer registro.
+
+SELECT * from userPrototypeOne WHERE edad > 15;  ----- de esta forma solo mostrar lo regstros de esta tabla que tengan una edad superior a 15 años.
+
+SELECT * from userPrototypeOne WHERE edad >= 15; ---- aqui sera similar al anterior, sin embargo el ser mayor o igual los resultados seran otros
+
+SELECT * from userPrototypeOne WHERE edad > 20 AND email = 'nico@gmail.com';   ---- aca va a ser muy especifico y nos traera solo el registro que tenga esas caracteristicas
+
+SELECT * from userPrototypeOne WHERE edad > 20 OR email = 'layla@gmail.com';   ---- aqui en cambio va a mostrar tanto los perfiles que tengas una edad mayor a 20 pero ademas al perfil que tenga ese mail
+
+SELECT * from userPrototypeOne WHERE email != 'layla@gmail.com'; ---- nos devolvera todos los elementos que no tengan ese email
+
+SELECT * from userPrototypeOne WHERE edad between 15 and 30; ----- nos devolvera los elementos cuya edad ronde entre los 15 y 30.
+
+SELECT * from userPrototypeOne WHERE email like  '%gmail%'; --- realiza una buusqueda dentro del campo de email, pero da igual su inicio y su final, sino que realiza una busqueda de lo indicado
+
+SELECT * from userPrototypeOne WHERE email like '%gmail'; --- en este caso, no importa como empieza la cadena, sino que lo que importa es que termine con gmail
+
+SELECT * from userPrototypeOne WHERE email like 'oscar%';  ---- y aqui en cambio es al reves, le importa que empiece con oscar, pero no importa como termine la informacion.
+
+  
+  Debajo tenemos dos selects el primero ordena de manera ascendente y el segundo de manera descendente
+
+SELECT * from userPrototypeOne order by edad asc;
+
+SELECT * from userPrototypeOne order by edad desc;
+
+ Y aqui nos devolvera el primero el mayor valor y el segundo el menor valor
+ 
+SELECT * max(edad) as mayor from userPrototypeOne;
+
+SELECT * min(edad) as menor from userPrototypeOne;
+
+hasta ahora el select solo lo use con el *, el cual implica que todos lo elementos de la tabla estan an uestra dispocision, pero podemos  elegir individualmente.
+
+SELECT id, name from userPrototypeOne; ---- no permitira leer las columnas que solicitemos.
+
+SELECT id, name as nombre from userPrototypeOne; ---- de esa forma podemos cambiar el nombre de la columna name a nombre.
+
+
+ LEFT JOIN: veremos como unir tablas en una sola.
+
+ Primero a crear otra tabla para trabajarla con la creada anteriormente.
+
+ CREATE TABLE products (
+   id int not null auto_increment,
+   name varchar(50) not null,
+   created_by int not null,
+   marca varchar(50) not null,
+   primary key(id),
+   foreign key(created_by) references userPrototypeOne(id)
+ );
+
+como dato extra, podemos cambiar el nombre de la tabla con:
+
+   rename table products to product;
+
+de esa forma pasa a ser de products a product...
+
+hora veamos una nueva alternativa de insertar informacion en la tabla, que nos permitira agregar mas de un elemento de la tabla  a la vez.
+
+  INSERT into product (name, created_by, marca)
+  values
+      ('ipad', 1, 'apple'),
+      ('iphone', 1, 'apple'),
+      ('watch', 2, 'apple'),
+      ('macbook', 1, 'apple),
+      ('imac', 3, 'apple'),
+      ('ipad mini', 2, 'apple'); 
+
+
+   Una vez instanciada la insercion de los componenetes de la tabla, 
+   veremos como ligar los la primary key de la tabla userPrototypeOne con la foraein ket de la product.
+
+   Debemos generar dos alias dentro de esa declaracion que simbolicen cada una de las tablas que van a ligarse,
+   la tabla userPrototypeOne va  tener el alias uPO, y la tabla product sera p.
+
+
+
+  SELECT uPO.id, uPO.email, p.name from userPrototypeOne uPO left join product p on uPO.id = p.created_by;
+
+
+  ademas del left join, tambien podemos realizar un right join.
+
+  SELECT uPO.id, uPO.email, p.name from userPrototypeOne uPO left join product p on uPO.id = p.created_by;
+
+
+  la diferencia es que no toma como referencia la tabla de userPrototypeOne sino que toma como referencia la tabla de product...
+  en el left join veiamos los usuariosque habia creado productos junto con cada producto creado, pero ademas teniamos a los usuarios que no habian hecho
+  ningun producto, en cambio en el right join, es ultima informacion no es obtenida, ya que toma a la tabla product como punto de referenia, 
+  no mostrar elementos de la tabla userPrototypeOne que no hayan creado productos.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
