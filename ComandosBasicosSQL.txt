@@ -260,10 +260,33 @@ hora veamos una nueva alternativa de insertar informacion en la tabla, que nos p
   ningun producto, en cambio en el right join, es ultima informacion no es obtenida, ya que toma a la tabla product como punto de referenia, 
   no mostrar elementos de la tabla userPrototypeOne que no hayan creado productos.
 
+  por ultimo, utilizaremos el cross join, el cual nos devuelve el producto cartesiano entre ambas tablas, es decir, toma cada elemeto por individual de una de las tablas, 
+  y ese elemento lo junta on cada uno de los elementos de la otra tabla, y repite el proceso con cada elemento de la primera tabla.
+
+  SELECT uPO.id, uPO.name, uPO.edad, p.id, p.name, p.marca from userPrototypeOne uPO cross join product p;
+
+
+  Hay un metodo que nos va a permitir agrupar lo elementos segun sus caracteristicas...
+
+  SELECT count(id), marca from product group by marca;       --- nos va devolver  que hay 6 prductos de apple...
+
+
+  ahora bien, hagamos esto pero ahora aplicando el left join...
+
+  SELECT count(p.id), uPO.name from product p left join userPrototypeOne uPO on uPO.id = p.created_by group by p.created_by;
+
+  De esta forma tomaremos el siguiente resultado, la tabla que recibiremos nos dira cuantos productos creo cada usuario
+  de la tabla userPrototypeOne, seria... oscar 3, layla 2, Nicolas 1...
+
+  Ahora veremos como hariamos si quisieramnos excluir a Nicolas, lo haremos utilizando la propiedad having.
+
+  SELECT count(p.id), uPO.name from product p left join userPrototypeOne uPO
+  on uPO.id = p.created_by group by p.created_by
+  having count(p.id) >= 2;
 
 
 
-
+  CARDINALIDAD: las relaciones que pueden tener unas tablas y otras.
 
 
 
